@@ -1,0 +1,40 @@
+#!/usr/bin/expect
+set timeout 2
+set RET 0
+set IP [lindex $argv 0]
+set PASSWD [lindex $argv 1]
+spawn ssh -p 22 ${IP}
+expect {
+    "(yes/no" 
+    {
+        send "yes\r"
+        expect {
+            "*password:" {
+            send "${PASSWD}\r"
+            expect "*]# " {send "exit\r";exit 0}
+            expect "*$ " {send "exit\r";exit 0}
+            expect "*Permission denied, please try again*" {set RET 1}
+            }
+            }
+    }
+    "*password:" 
+    {
+        send "${PASSWD}\r"
+        expect "*]# " {send "exit\r";exit 0}
+        expect "*$ " {send "exit\r";exit 0}
+        expect "*Permission denied, please try again*" {set RET 1}
+    }
+    "*#" 
+    {
+        exit 0
+    }
+    "*$" {
+        exit 0
+    }
+    timeout 
+    {
+        exit 127
+    }
+}
+expect eof
+exit $RET

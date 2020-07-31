@@ -1,0 +1,25 @@
+#!/usr/bin/expect
+set timeout 3
+set user_hostname [lindex $argv 0]
+set password [lindex $argv 1]
+spawn ssh-copy-id $user_hostname -f
+expect {
+    "added" 
+    {
+      exit 0
+    }
+    "Are you sure you want to continue connecting (yes/no/"
+    {
+        send "yes\n"
+        expect "*assword:" { send "$password\n"}
+    }
+    "*assword:"
+    {
+        send "$password\n"
+    }
+    timeout 
+    {
+        exit 127
+    }
+}
+expect eof
