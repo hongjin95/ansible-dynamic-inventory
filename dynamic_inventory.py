@@ -15,6 +15,14 @@ import pymysql
 
 from app.config import *
 
+MYSQL = {
+    'host': '', 
+    'port': 3306,
+    'user': '',
+    'password': '',
+    'db': ''
+}
+
 
 class DynamicInventory():
     def __init__(self):
@@ -37,8 +45,8 @@ class DynamicInventory():
             where s.is_delete=0 and g.is_delete=0
             '''
         try:
-            conn = pymysql.connect(host=MYSQL[ENV][2], port=int(MYSQL[ENV][3]), \
-                user=MYSQL[ENV][0], passwd=MYSQL[ENV][1], db=MYSQL[ENV][4], \
+            conn = pymysql.connect(host=MYSQL['host'], port=int(MYSQL['port']), \
+                user=MYSQL['user'], passwd=MYSQL['password'], db=MYSQL['db'], \
                 charset='utf8')
             cur = conn.cursor()
             cur.execute(sql)
