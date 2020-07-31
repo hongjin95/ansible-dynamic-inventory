@@ -1,2 +1,2 @@
-# hj
+# dynamic inventory for ansible
 Automatically opration, incluing python, shell, mysql, ansible, vue...
